@@ -236,39 +236,7 @@ function getCortesNubank(ano, mes, dia, razon)
 }
 
 
-function checkTime(ano, mes, dia, check)
-{
-    var newMes;
-    var newAno;
-    var newDia;
 
-
-    if (check == 0) {
-        newDia = 25;
-        if (mes == 0) {
-            newMes = 11 - 1;
-            newAno = ano - 1;
-        } else if (mes == 1) {
-            newMes = 11;
-            newAno = ano - 1;
-        } else {
-            newMes = mes - 2;
-            newAno = ano;
-        }
-    } else {
-        newDia = 24;
-        if (mes == 0) {
-            newMes = 11;
-            newAno = ano - 1;
-        } else {
-            newMes = mes - 1;
-            newAno = ano;
-        }
-    }
-    var time = new Date(newAno, newMes, newDia);
-    console.log(time, "new time");
-    return time;
-}
 
 function checkSubfondo(subfondos)
 {
