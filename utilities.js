@@ -33,4 +33,23 @@ function checkTime(ano, mes, dia, check, debug = false)
     return time;
 }
 
-export {checkTime};
+function timeMatchInterval(arr, initDate, endDate)
+{
+    let newArr =[];
+    arr.forEach((item, index) => {
+        if (item.time.getFullYear() === initDate.getFullYear()
+            && item.time.getMonth() === initDate.getMonth()
+            && item.time.getDate() >= initDate.getDate()
+            ||
+            item.time.getFullYear() === endDate.getFullYear()
+            && item.time.getMonth() === endDate.getMonth()
+            && item.time.getDate() <= endDate.getDate()) {
+            newArr.push(item)
+        }
+    });
+
+    return newArr;
+}
+
+
+//export {checkTime, timeMatchInterval}; exports not working in googlescripts

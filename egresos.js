@@ -3,6 +3,7 @@
 var ss = SpreadsheetApp.getActiveSpreadsheet();
 var sheet = ss.getSheets()[0];
 
+
 function getEgresosByBanco(ano, mes, dia, banco)
 {
     var time = new Date(ano, mes, dia);
@@ -91,9 +92,9 @@ function getGastos(ano, mes, dia, fondo, subFondo)
 function test_myFunctionEgresos()
 {
     //getEgresosByBanco(2020, 4, 5, 'Bradesco');
-    getGastos(2020, 4, 5, 'Casa', 'Comida');
+    //getGastos(2020, 4, 5, 'Casa', 'Comida');
     //getCortesCreditos(2020,1,5,'Corte de Tarjeta de Credito');
-    //getGastosCreditos(2020,1,5,'Gastos Personales','Gastos laborales',0);
+    getGastosCreditos(2020, 1, 5, 'Gastos Personales', 'Gastos laborales', 0);
     //getCortesNubank(2020,1,26,'Corte de Tarjeta de Credito nuBank');
 }
 
@@ -101,6 +102,7 @@ function test_myFunctionEgresos()
 //gets credito values
 function getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
 {
+    let BANK = 'Bradesco/credito';
     var egresosCredito = [];
     var time = new Date(ano, mes, dia);
     var timeInit = checkTime(ano, mes, dia, 0);
@@ -125,39 +127,27 @@ function getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
                     'cuentaDeSalida': cuentas[i][20],
                     'desc': cuentas[i][7],
                     'banco': cuentas[i][24]
-                }
+                };
                 //console.log(data);
                 egresosCredito.push(data);
             }
         }
     }
 
-    //console.log(time, " ", timeInit, " ", timeEnd );
-    //console.log(egresosCredito, 'credito total');
+    egresosCredito = this.timeMatchInterval(egresosCredito, timeInit, timeEnd);
+    //console.log(egresosCredito );
 
-    for (var i = 0, len = egresosCredito.length; i < len; i++) {
-        if (egresosCredito[i].time.getFullYear() == timeInit.getFullYear()
-            && egresosCredito[i].time.getMonth() == timeInit.getMonth()
-            && egresosCredito[i].time.getDate() >= timeInit.getDate()
-            ||
-            egresosCredito[i].time.getFullYear() == timeEnd.getFullYear()
-            && egresosCredito[i].time.getMonth() == timeEnd.getMonth()
-            && egresosCredito[i].time.getDate() <= timeEnd.getDate()
-
-        ) {
-            if (egresosCredito[i].banco == 'Bradesco/credito') {
-                if (egresosCredito[i].fondo == fondo) {
-                    var eSubFondo = checkSubfondo(egresosCredito[i].subFondo);
-                    if (eSubFondo == subFondo) {
-                        console.log(egresosCredito[i]);
-                        resGasto += egresosCredito[i].monto;
-
-                    }
+    egresosCredito.forEach((item) => {
+        if (item.banco === BANK) {
+            if (item.fondo === fondo) {
+                let eSubFondo = checkSubfondo(item.subFondo);
+                if (eSubFondo === subFondo) {
+                    //console.log(item);
+                    resGasto += item.monto;
                 }
             }
-
         }
-    }
+    });
 
     return resGasto;
 }
@@ -234,9 +224,6 @@ function getCortesNubank(ano, mes, dia, razon)
     console.log(res, 'final')
     return res;
 }
-
-
-
 
 function checkSubfondo(subfondos)
 {
