@@ -17,16 +17,12 @@ function transferTo(ano, mes, dia, bancoL) {
     var movimientos=getValues(bancoL, 26);
     var res=0;
 
-    for(var i=0, len=movimientos.length; i<len ; i++){
+    movimientos = timeMatchDate(movimientos, time);
+    movimientos.forEach(item=>{
+        res+= item.monto;
+    });
 
-        if(movimientos[i].time.getFullYear()== ano && movimientos[i].time.getMonth()== mes && movimientos[i].time.getDate()==dia){
-            //console.log(movimientos[i]);
-            res+= movimientos[i].monto;
-
-        }
-    }
     return res;
-
 }
 
 // date, banco Salida
@@ -35,18 +31,12 @@ function transferBy(ano, mes, dia, bancoS){
     var movimientos=getValues(bancoS, 21);
     var res=0;
 
-    for(var i=0, len=movimientos.length; i<len ; i++){
-
-        if(movimientos[i].time.getFullYear()== ano && movimientos[i].time.getMonth()== mes && movimientos[i].time.getDate()==dia){
-            //console.log(movimientos[i]);
-            res+= movimientos[i].monto;
-
-        }
-    }
+    movimientos = timeMatchDate(movimientos, time);
+    movimientos.forEach(item=>{
+        res+= item.monto;
+    });
 
     return res;
-
-
 }
 
 function test_myfunc(){

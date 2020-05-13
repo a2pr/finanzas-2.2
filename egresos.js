@@ -12,8 +12,8 @@ function getEgresosByBanco(ano, mes, dia, banco)
     var cuentas = sheet.getRange("A:AB").getValues();
     len = cuentas.length;
     for (var i = 0; i < len; i++) {
-        if (cuentas[i][3] == 'Egreso' && cuentas[i][23] == 'Egreso') {
-            if (cuentas[i][24] == banco) {
+        if (cuentas[i][3] === 'Egreso' && cuentas[i][23] === 'Egreso') {
+            if (cuentas[i][24] === banco) {
                 var data = {
                     'time': cuentas[i][0],
                     'monto': cuentas[i][1],
@@ -24,14 +24,12 @@ function getEgresosByBanco(ano, mes, dia, banco)
         }
     }
 
-    for (var i = 0, len = egresos.length; i < len; i++) {
+    egresos = timeMatchDate(egresos, time);
 
-        if (egresos[i].time.getFullYear() == ano && egresos[i].time.getMonth() == mes && egresos[i].time.getDate() == dia) {
-            console.log(egresos[i]);
-            res += egresos[i].monto;
-
-        }
-    }
+    egresos.forEach((arg) => {
+        console.log(arg);
+        res += arg.monto;
+    });
     //console.log(res);
     return (res);
 }
@@ -66,6 +64,19 @@ function getGastos(ano, mes, dia, fondo, subFondo)
         }
     }
 
+    egresos = timeMatchDate(egresos, time);
+    egresos.forEach((item) => {
+        if (item.fondo === fondo) {
+            let eSubFondo = checkSubfondo(item.subFondo);
+            eSubFondo.forEach((item) => {
+                    if (item === subFondo) {
+                        //console.log(egresos[i]);
+                        res += item.monto;
+                    }
+                }
+            );
+        }
+    });
     for (var i = 0, len = egresos.length; i < len; i++) {
 
         if (egresos[i].time.getDate() == time.getDate()
@@ -81,7 +92,7 @@ function getGastos(ano, mes, dia, fondo, subFondo)
 
         }
     }
-    if (time.getDate() == 5) {
+    if (time.getDate() === 5) {
         res += getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
     }
     console.log(res);
@@ -98,7 +109,6 @@ function test_myFunctionEgresos()
     //getCortesNubank(2020,1,26,'Corte de Tarjeta de Credito nuBank');
 }
 
-//gets credito values
 //gets credito values
 function getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
 {
@@ -155,7 +165,7 @@ function getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
 
 function getCortesCreditos(ano, mes, dia, razon)
 {
-    var Cortes = [];
+    var cortes = [];
     var time = new Date(ano, mes, dia);
     var res = 0;
     var cuentas = sheet.getRange("A:AB").getValues();
@@ -170,28 +180,27 @@ function getCortesCreditos(ano, mes, dia, razon)
                     'desc': cuentas[i][7]
                 }
 
-                Cortes.push(data);
+                cortes.push(data);
             }
         }
     }
     //console.log(Cortes);
-    for (var i = 0, len = Cortes.length; i < len; i++) {
-        if (Cortes[i].time.getDate() == dia
-            && Cortes[i].time.getMonth() == mes
-            && Cortes[i].time.getFullYear() == ano) {
-            if (Cortes[i].razon == razon) {
-                //console.log(Cortes[i]);
-                res += Cortes[i].monto;
-            }
+    cortes= timeMatchDate(cortes, time);
+
+    cortes.forEach((item)=>{
+        if (item.razon === razon) {
+            //console.log(Cortes[i]);
+            res += item.monto;
         }
-    }
+    });
+
     //console.log(res, 'final')
     return res;
 }
 
 function getCortesNubank(ano, mes, dia, razon)
 {
-    var Cortes = [];
+    var cortes = [];
     var time = new Date(ano, mes, dia);
     var res = 0;
     var cuentas = sheet.getRange("A:AB").getValues();
@@ -206,33 +215,20 @@ function getCortesNubank(ano, mes, dia, razon)
                     'desc': cuentas[i][7]
                 }
 
-                Cortes.push(data);
+                cortes.push(data);
             }
         }
     }
-    //console.log(Cortes);
-    for (var i = 0, len = Cortes.length; i < len; i++) {
-        if (Cortes[i].time.getDate() == dia
-            && Cortes[i].time.getMonth() == mes
-            && Cortes[i].time.getFullYear() == ano) {
-            if (Cortes[i].razon == razon) {
-                //console.log(Cortes[i]);
-                res += Cortes[i].monto;
-            }
+
+    cortes= timeMatchDate(cortes, time);
+    cortes.forEach((item)=>{
+        if (item.razon === razon) {
+            //console.log(Cortes[i]);
+            res += item.monto;
         }
-    }
-    console.log(res, 'final')
+    });
+
+    //console.log(res, 'final')
     return res;
 }
 
-function checkSubfondo(subfondos)
-{
-
-    for (var i = 0; i < subfondos.length; i++) {
-        if (subfondos[i] != "") {
-            return subfondos[i];
-        }
-    }
-    return;
-
-}

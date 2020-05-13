@@ -5,8 +5,8 @@ var cuentas= sheet.getRange("A:AB").getValues();
 
 
 function investByYear(ano, subFondo) {
-    var ingresos=[];
-    var res=0;
+    let ingresos=[];
+    let res=0;
     var cuentas= sheet.getRange("A:AB").getValues();
     len=cuentas.length;
     percentFondo= getPercent(subFondo);
@@ -25,30 +25,30 @@ function investByYear(ano, subFondo) {
         }
     }
     //console.log(ingresos);
-    for(i=0,len=ingresos.length;i<len;i++){
-        if(ingresos[i].time.getYear()==ano ){
-            value= percent(ingresos[i].monto, percentFondo);
-            //console.log(value, 'here');
-            res+=value
 
-        }
+    ingresos.forEach((item)=>{
+       if(item.time.getFullYear()===ano){
+           value= percent(ingresos[i].monto, percentFondo);
+           //console.log(value, 'here');
+           res+=value
+       }
+    });
 
-    }
     console.log(res);
     return res;
 }
 
 function getPercent(value){
 
-    if(value=='CBD'){
+    if(value==='CBD'){
         //console.log('CBD');
         return 2.8;
     }
-    if(value=='Onix'){
+    if(value==='Onix'){
         //console.log('Onix');
         return 0.75;
     }
-    if(value=='Previsorio'){
+    if(value==='Previsorio'){
         //console.log('Previsorio');
         return 1.45;
     }

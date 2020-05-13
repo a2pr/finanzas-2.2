@@ -35,7 +35,7 @@ function checkTime(ano, mes, dia, check, debug = false)
 
 function timeMatchInterval(arr, initDate, endDate)
 {
-    let newArr =[];
+    let newArr = [];
     arr.forEach((item, index) => {
         if (item.time.getFullYear() === initDate.getFullYear()
             && item.time.getMonth() === initDate.getMonth()
@@ -51,5 +51,67 @@ function timeMatchInterval(arr, initDate, endDate)
     return newArr;
 }
 
+function timeMatchDate(arr, time)
+{
+    let newArr = [];
+    arr.forEach((item) => {
+        if (item.time.getFullYear() === time.getFullYear()
+            && item.time.getMonth() === time.getMonth()
+            && item.time.getDate() === time.getDate()
+        ) {
+            newArr.push(item)
+        }
+    });
+
+    return newArr;
+}
+
+function timeMatchMonth(arr, time)
+{
+    let newArr = [];
+    arr.forEach((item) => {
+        if (
+            item.time.getFullYear() === time.getFullYear()
+            && item.time.getMonth() === time.getMonth()
+        ) {
+            newArr.push(item)
+        }
+    });
+
+    return newArr;
+}
+
+/**
+ *
+ * @param arr
+ * @param timeInit
+ * @param timeEnd
+ * @returns {[]}
+ */
+function byTimeDateInterval(arr, timeInit, timeEnd)
+{
+    let newArr = [];
+    arr = timeMatchMonth(arr, timeInit);
+    arr.forEach((item) => {
+        if (item.time.getDate() >= timeInit.getDate() && item.time.getDate() <= timeEnd.getDate()) {
+            newArr.push(item);
+        }
+    });
+
+    return newArr;
+}
+
+function checkSubfondo(subfondos)
+{
+
+    subfondos.forEach((item, index) => {
+        if (item !== '') {
+            subfondos.splice(index, 1);
+        }
+    });
+    console.log(subfondos);
+    return subfondos;
+
+}
 
 //export {checkTime, timeMatchInterval}; exports not working in googlescripts
