@@ -144,19 +144,25 @@ function getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
         }
     }
 
-    egresosCredito = this.timeMatchInterval(egresosCredito, timeInit, timeEnd);
+    egresosCredito = timeMatchInterval(egresosCredito, timeInit, timeEnd);
     //console.log(egresosCredito );
 
     egresosCredito.forEach((item) => {
-        if (item.banco === BANK) {
-            if (item.fondo === fondo) {
-                let eSubFondo = checkSubfondo(item.subFondo);
-                if (eSubFondo === subFondo) {
-                    //console.log(item);
-                    resGasto += item.monto;
+        let eSubFondo;
+        if (item.fondo === fondo) {
+
+            item.subFondo.forEach((i) => {
+                if (i !== "") {
+                    eSubFondo = i;
                 }
+            });
+
+            if (eSubFondo === subFondo) {
+                //console.log(item);
+                resGasto += item.monto;
             }
         }
+
     });
 
     return resGasto;
@@ -185,9 +191,9 @@ function getCortesCreditos(ano, mes, dia, razon)
         }
     }
     //console.log(Cortes);
-    cortes= timeMatchDate(cortes, time);
+    cortes = timeMatchDate(cortes, time);
 
-    cortes.forEach((item)=>{
+    cortes.forEach((item) => {
         if (item.razon === razon) {
             //console.log(Cortes[i]);
             res += item.monto;
@@ -220,8 +226,8 @@ function getCortesNubank(ano, mes, dia, razon)
         }
     }
 
-    cortes= timeMatchDate(cortes, time);
-    cortes.forEach((item)=>{
+    cortes = timeMatchDate(cortes, time);
+    cortes.forEach((item) => {
         if (item.razon === razon) {
             //console.log(Cortes[i]);
             res += item.monto;

@@ -7,19 +7,19 @@ var cuentas= sheet.getRange("A:AB").getValues();
 function investByYear(ano, subFondo) {
     let ingresos=[];
     let res=0;
-    var cuentas= sheet.getRange("A:AB").getValues();
-    len=cuentas.length;
-    percentFondo= getPercent(subFondo);
+    let cuentas= sheet.getRange("A:AB").getValues();
+    let len=cuentas.length;
+    let percentFondo= getPercent(subFondo);
     for(var i=0; i<len ; i++){
 
-        if(cuentas[i][3]=='Ingreso'&& cuentas[i][2]=='R$' && cuentas[i][4]=='Pago de Salario'){
-            var data={
+        if(cuentas[i][3]==='Ingreso'&& cuentas[i][2]==='R$' && cuentas[i][4]==='Pago de Salario'){
+            let data={
                 'time': cuentas[i][0],
                 'monto': cuentas[i][1],
                 'moneda':cuentas[i][2],
 
                 'cuentaDeSalida': cuentas[i][24]
-            }
+            };
             ingresos.push(data);
 
         }
@@ -28,7 +28,7 @@ function investByYear(ano, subFondo) {
 
     ingresos.forEach((item)=>{
        if(item.time.getFullYear()===ano){
-           value= percent(ingresos[i].monto, percentFondo);
+           let value= percent(item.monto, percentFondo);
            //console.log(value, 'here');
            res+=value
        }

@@ -104,14 +104,11 @@ function byTimeDateInterval(arr, timeInit, timeEnd)
 function checkSubfondo(subfondos)
 {
 
-    subfondos.forEach((item, index) => {
-        if (item !== '') {
-            subfondos.splice(index, 1);
+    subfondos.forEach((item) => {
+        if (item !== "") {
+            return item;
         }
     });
-    console.log(subfondos);
-    return subfondos;
-
 }
 
 //export {checkTime, timeMatchInterval}; exports not working in googlescripts
