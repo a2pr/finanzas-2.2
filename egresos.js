@@ -24,12 +24,12 @@ function getEgresosByBanco(ano, mes, dia, banco)
         }
     }
 
-    egresos = timeMatchDate(egresos, time);
 
-    egresos.forEach((arg) => {
-        console.log(arg);
-        res += arg.monto;
+    egresos= timeMatchDate(egresos, time);
+    egresos.forEach((item)=>{
+        res+= item.monto;
     });
+
     //console.log(res);
     return (res);
 }
@@ -66,32 +66,20 @@ function getGastos(ano, mes, dia, fondo, subFondo)
 
     egresos = timeMatchDate(egresos, time);
     egresos.forEach((item) => {
+        let eSubFondo;
         if (item.fondo === fondo) {
-            let eSubFondo = checkSubfondo(item.subFondo);
-            eSubFondo.forEach((item) => {
-                    if (item === subFondo) {
-                        //console.log(egresos[i]);
-                        res += item.monto;
-                    }
+            item.subFondo.forEach((i) => {
+                if (i !== "") {
+                    eSubFondo = i;
                 }
-            );
+            });
+
+            if (eSubFondo === subFondo) {
+                //console.log(item);
+                res += item.monto;
+            }
         }
     });
-    for (var i = 0, len = egresos.length; i < len; i++) {
-
-        if (egresos[i].time.getDate() == time.getDate()
-            && egresos[i].time.getMonth() == time.getMonth()
-            && egresos[i].time.getFullYear() == time.getFullYear()) {
-            if (egresos[i].fondo == fondo) {
-                var eSubFondo = checkSubfondo(egresos[i].subFondo);
-                if (eSubFondo == subFondo) {
-                    //console.log(egresos[i]);
-                    res += egresos[i].monto;
-                }
-            }
-
-        }
-    }
     if (time.getDate() === 5) {
         res += getGastosCreditos(ano, mes, dia, fondo, subFondo, res)
     }
